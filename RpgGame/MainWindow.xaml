@@ -1,0 +1,393 @@
+﻿<Window
+    Height="1600"
+    Title="Ignoring Daily Life's Excitement IDLEGame"
+    Width="720"
+    Closing="Window_Closing"
+    x:Class="RpgGame.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:vms="clr-namespace:RpgGame.ViewModel"
+    xmlns:srv="clr-namespace:RpgGame.Services"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <Window.DataContext>
+        <vms:MainWindowViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <srv:GoldConverter x:Key="GoldConverter"/>
+        <srv:GoldForUpdateCalculator x:Key="GoldForUpdate"/>
+        <srv:StaminaToProgressBarWidthConverter x:Key="StaminaToProgressBarWidthConverter" />
+        <srv:BarcolorConver x:Key="BarcolorConvert" />
+        <srv:PercentageConverter x:Key="PercentageConverter" />
+        
+        <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="MyStackPanelLinearGradientBrush">
+            <GradientStop Color="#04003e" Offset="0.24" />
+            <GradientStop Color="#2200ff" Offset="0.70" />
+            <GradientStop Color="#4ba6ff" Offset="0.95" />
+        </LinearGradientBrush>
+        <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="MyNavBarLinearGradientBrush">
+            <GradientStop Color="DarkCyan" Offset="0.24" />
+            <GradientStop Color="Cyan" Offset="0.70" />
+            <GradientStop Color="LightCyan" Offset="0.95" />
+        </LinearGradientBrush>
+        <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="MyButtonLinearGradientBrush">
+            <GradientStop Color="DarkGreen" Offset="0.1" />
+            <GradientStop Color="LimeGreen" Offset="0.5" />
+            <GradientStop Color="LimeGreen" Offset="0.8" />
+        </LinearGradientBrush>
+        <Style TargetType="Border" x:Key="MyButtonBorderStyle">
+            <Setter Property="BorderThickness" Value="3" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="CornerRadius" Value="30" />
+            <Setter Property="Background" Value="{StaticResource MyButtonLinearGradientBrush}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Yellow" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type Border}" x:Key="MyStackPanelBorderStyle">
+            <Setter Property="BorderThickness" Value="3" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="CornerRadius" Value="30" />
+            <Setter Property="Background" Value="{StaticResource MyStackPanelLinearGradientBrush}" />
+        </Style>
+        <Style TargetType="{x:Type Border}" x:Key="MyNavBarBorderStyle">
+            <Setter Property="HorizontalAlignment" Value="Center" ></Setter>
+            <Setter Property="VerticalAlignment" Value="Top" ></Setter>
+            <Setter Property="Height" Value="40" ></Setter>
+            <Setter Property="BorderThickness" Value="3" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="CornerRadius" Value="0, 0, 20, 20" />
+            <Setter Property="Background" Value="{StaticResource MyNavBarLinearGradientBrush}" />
+        </Style>
+        <Style TargetType="{x:Type StackPanel}" x:Key="MyStackPanel">
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="Margin" Value="20,20,20,20" />
+            <Setter Property="Width" Value="650" />
+            <Setter Property="Height" Value="100" />
+            <Setter Property="Background" Value="Wheat" />
+        </Style>
+        <Style TargetType="{x:Type Label}" x:Key="MyLabelStyle">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" ></Setter>
+            <Setter Property="Margin" Value="20,0,20,0" />
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Height" Value="70" />
+            <Setter Property="BorderThickness" Value="5,0,5,0" />
+            <Setter Property="BorderBrush" Value="Red" />
+            <Setter Property="Content" Value="Upgrade&#x0a;Cost:200" />
+            <Setter Property="TextElement.FontSize" Value="17" />
+            <Setter Property="Padding" Value="20,0,0,0" />
+            <Setter Property="TextElement.FontStyle" Value="Italic" />
+            <Setter Property="TextElement.FontWeight" Value="DemiBold" />
+            <Setter Property="FontFamily" Value="Georgia" />
+            <Setter Property="Foreground" Value="Aquamarine" ></Setter>
+        </Style>
+        <Style TargetType="{x:Type Image}" x:Key="MyImage">
+            <Setter Property="Width" Value="50" />
+            <Setter Property="Height" Value="50" />
+        </Style>
+        <Style TargetType="{x:Type Button}" x:Key="MyButton">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Width" Value="140" />
+            <Setter Property="Height" Value="70" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            x:Name="border">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="Transparent" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+    </Window.Resources>
+
+    <Grid x:Name="MyGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Rectangle Grid.Row="0">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/images/background.png" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Border Style="{StaticResource MyNavBarBorderStyle}">
+            <StackPanel Grid.Row="0" 
+                    Height="30"
+                    Width="720"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+                <StackPanel
+                Grid.Row="0"
+                Height="30"
+                Width="200"
+                Orientation="Horizontal"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                >
+                    <Image  Height="25" Width="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Source="images/gold.png" ></Image>
+                    <Label Height="25" Width="100"  Content="{Binding GameData[0].UserMoney, Converter={StaticResource GoldConverter} }"
+                 HorizontalContentAlignment="Left" VerticalAlignment="Center" ></Label>
+                </StackPanel>
+                <StackPanel
+                Width="320"
+                >
+                    <Label Height="25" Width="100"  Content="{Binding GameData[0].UserLevel}" ContentStringFormat="Level&#x0a;{0}}"
+                 HorizontalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" ></Label>
+                </StackPanel>
+                <StackPanel>
+                    <Button  x:Name="AdminGold" Click="AddAdminGold" PreviewMouseLeftButtonDown="StartAction" PreviewMouseLeftButtonUp="StopAction">Click and Hold</Button>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!--  Gameplay // Clicking screen  -->
+        <StackPanel Grid.Row="0"
+                    Height="500"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Width="300" Margin="0,50,0,0">
+            <ProgressBar x:Name="progressBar" Height="30" Minimum="0" Maximum="100"
+             Value="{Binding GameData[0].Stats.CurrentEnergyLvl}">
+                <ProgressBar.Template>
+                    <ControlTemplate TargetType="ProgressBar">
+                        <Grid>
+                            <Rectangle x:Name="PART_Track" RadiusX="20" RadiusY="20" />
+                            <Rectangle x:Name="PART_Indicator" Fill="#FF0049FB" HorizontalAlignment="Left" RadiusX="20" RadiusY="20" Opacity="0.8" />
+                            <TextBlock Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, 
+                                          Converter={StaticResource PercentageConverter},
+                                          StringFormat=Stamina: {0}%}" 
+                           HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Foreground="Black" FontWeight="Bold" FontStyle="Italic" TextDecorations="Underline"/>
+                        </Grid>
+                    </ControlTemplate>
+                </ProgressBar.Template>
+            </ProgressBar>
+
+
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="0"
+            Height="700"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="300">
+
+            <Image x:Name="pressForGold" 
+                   Height="600"
+                   Width="320"
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"  
+                   Source="/images/btn_basic.png" 
+                   MouseDown="AddGold_ImageClick" 
+                   Cursor="Hand" 
+                   RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform Y="10"/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </StackPanel>
+        <!--  StackPanels In Listbox // Upgrading screen  -->
+        <ScrollViewer
+            Grid.Row="1"
+            HorizontalScrollBarVisibility="Hidden"
+            VerticalScrollBarVisibility="Visible">
+            <ListBox Background="Teal">
+                <Border Style="{StaticResource MyStackPanelBorderStyle}">
+                    <StackPanel  Style="{StaticResource MyStackPanel}">
+                        <StackPanel.Background>
+                            <SolidColorBrush Opacity="0.0" />
+                        </StackPanel.Background>
+                        <Image Source="/images/icon1.png" Style="{StaticResource MyImage}" />
+                        <Label Style="{StaticResource MyLabelStyle}" 
+                               Content="{Binding GameData[0].Stats.Power}" 
+                               ContentStringFormat="Power&#x0a;Level: {0}" />
+                        <Border Style="{StaticResource MyButtonBorderStyle}">
+                            <Button x:Name="powerButton"
+                                    Style="{StaticResource MyButton}"
+                                    
+                                    Command="{Binding GameData[0].UpgradeStatCommand}" CommandParameter="Power"
+                                    >
+                                <Label Content="{Binding GameData[0].Stats.Power, Converter={StaticResource GoldForUpdate} }" ContentStringFormat="Upgrade&#x0a;Cost: {0}" ></Label>
+                            </Button>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource MyStackPanelBorderStyle}">
+                    <StackPanel Style="{StaticResource MyStackPanel}">
+                        <StackPanel.Background>
+                            <SolidColorBrush Opacity="0.0" />
+                        </StackPanel.Background>
+                        <Image Source="/images/icon2.png" Style="{StaticResource MyImage}" />
+                        <Label Style="{StaticResource MyLabelStyle}" 
+                               Content="{Binding GameData[0].Stats.Stamina}" 
+                               ContentStringFormat="Stamina&#x0a;Level: {0}" />
+                        <Border Style="{StaticResource MyButtonBorderStyle}">
+                            <Button x:Name="staminaButton"
+                                    Style="{StaticResource MyButton}"
+                                    
+                                    Command="{Binding GameData[0].UpgradeStatCommand}" CommandParameter="Stamina"
+                                    >
+                                <Label  Content="{Binding GameData[0].Stats.Stamina, Converter={StaticResource GoldForUpdate} }" ContentStringFormat="Upgrade&#x0a;Cost:{0}" />
+                            </Button>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource MyStackPanelBorderStyle}">
+                    <StackPanel Style="{StaticResource MyStackPanel}">
+                        <StackPanel.Background>
+                            <SolidColorBrush Opacity="0.0" />
+                        </StackPanel.Background>
+                        <Image Source="/images/icon3.png" Style="{StaticResource MyImage}" />
+                        <Label Style="{StaticResource MyLabelStyle}" 
+                               Content="{Binding GameData[0].Stats.Energy}" 
+                               ContentStringFormat="Energy&#x0a;Level: {0}" />
+                        <Border Style="{StaticResource MyButtonBorderStyle}">
+                            <Button x:Name="energyButton"
+                                    Style="{StaticResource MyButton}"
+                                    
+                                    Command="{Binding GameData[0].UpgradeStatCommand}" CommandParameter="Energy"
+                                    >
+                                <Label  Content="{Binding GameData[0].Stats.Energy, Converter={StaticResource GoldForUpdate} }" ContentStringFormat="Upgrade&#x0a;Cost:{0}" />
+                            </Button>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource MyStackPanelBorderStyle}">
+                    <StackPanel Style="{StaticResource MyStackPanel}">
+                        <StackPanel.Background>
+                            <SolidColorBrush Opacity="0.0" />
+                        </StackPanel.Background>
+                        <Image Source="/images/icon4.png" Style="{StaticResource MyImage}" />
+                        <Label Style="{StaticResource MyLabelStyle}" 
+                               Content="{Binding GameData[0].Stats.PriceDiscount}" 
+                               ContentStringFormat="Price Discount&#x0a;Level: {0}" />
+                        <Border Style="{StaticResource MyButtonBorderStyle}">
+                            <Button x:Name="pricediscountButton"
+                                    Style="{StaticResource MyButton}"
+                                    Command="{Binding GameData[0].UpgradeStatCommand}" CommandParameter="PriceDiscount" HorizontalAlignment="Center"
+                                    >
+                                <Label  Content="{Binding GameData[0].Stats.PriceDiscount, Converter={StaticResource GoldForUpdate} }" ContentStringFormat="Upgrade&#x0a;Cost:{0}" />
+                            </Button>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource MyStackPanelBorderStyle}">
+                    <StackPanel Style="{StaticResource MyStackPanel}">
+                        <StackPanel.Background>
+                            <SolidColorBrush Opacity="0.0" />
+                        </StackPanel.Background>
+                        <Image Source="/images/icon5.png" Style="{StaticResource MyImage}" />
+                        <Label Style="{StaticResource MyLabelStyle}" 
+                               Content="{Binding GameData[0].Stats.DoubleLiftChance}" 
+                               ContentStringFormat="Double Lift Chance&#x0a;Level: {0}" />
+                        <Border Style="{StaticResource MyButtonBorderStyle}">
+                            <Button x:Name="doubleliftchanceButton"
+                                    Style="{StaticResource MyButton}"
+                                    
+                                    Command="{Binding GameData[0].UpgradeStatCommand}" CommandParameter="DoubleLiftChance"
+                                    >
+                                <Label  Content="{Binding GameData[0].Stats.DoubleLiftChance, Converter={StaticResource GoldForUpdate} }" ContentStringFormat="Upgrade&#x0a;Cost:{0}" />
+                            </Button>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource MyStackPanelBorderStyle}">
+                    <StackPanel Style="{StaticResource MyStackPanel}">
+                        <StackPanel.Background>
+                            <SolidColorBrush Opacity="0.0" />
+                        </StackPanel.Background>
+                        <Image Source="/images/icon1.png" Style="{StaticResource MyImage}" />
+                        <Label Style="{StaticResource MyLabelStyle}" />
+                        <Border Style="{StaticResource MyButtonBorderStyle}">
+                            <Button Style="{StaticResource MyButton}"
+                                    Command="{Binding GameData[0].UnlockAutoClickCommand}" CommandParameter="True"
+                                    >
+                                <Label Content="Upgrade&#x0a;Cost:600" />
+                            </Button>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource MyStackPanelBorderStyle}">
+                    <StackPanel Style="{StaticResource MyStackPanel}">
+                        <StackPanel.Background>
+                            <SolidColorBrush Opacity="0.0" />
+                        </StackPanel.Background>
+                        <Image Source="/images/icon1.png" Style="{StaticResource MyImage}" />
+                        <Label Style="{StaticResource MyLabelStyle}" />
+                        <Border Style="{StaticResource MyButtonBorderStyle}">
+                            <Button Style="{StaticResource MyButton}">
+                                <Label Content="Upgrade&#x0a;Cost:700" />
+                            </Button>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource MyStackPanelBorderStyle}">
+                    <StackPanel Style="{StaticResource MyStackPanel}">
+                        <StackPanel.Background>
+                            <SolidColorBrush Opacity="0.0" />
+                        </StackPanel.Background>
+                        <Image Source="/images/icon1.png" Style="{StaticResource MyImage}" />
+                        <Label Style="{StaticResource MyLabelStyle}" />
+                        <Border Style="{StaticResource MyButtonBorderStyle}">
+                            <Button Style="{StaticResource MyButton}">
+                                <Label Content="Upgrade&#x0a;Cost:800" />
+                            </Button>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource MyStackPanelBorderStyle}">
+                    <StackPanel Style="{StaticResource MyStackPanel}">
+                        <StackPanel.Background>
+                            <SolidColorBrush Opacity="0.0" />
+                        </StackPanel.Background>
+                        <Image Source="/images/icon1.png" Style="{StaticResource MyImage}" />
+                        <Label Style="{StaticResource MyLabelStyle}" />
+                        <Border Style="{StaticResource MyButtonBorderStyle}">
+                            <Button Style="{StaticResource MyButton}">
+                                <Label Content="Upgrade&#x0a;Cost:900" />
+                            </Button>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource MyStackPanelBorderStyle}">
+                    <StackPanel Style="{StaticResource MyStackPanel}">
+                        <StackPanel.Background>
+                            <SolidColorBrush Opacity="0.0" />
+                        </StackPanel.Background>
+                        <Image Source="/images/icon1.png" Style="{StaticResource MyImage}" />
+                        <Label Style="{StaticResource MyLabelStyle}" />
+                        <Border Style="{StaticResource MyButtonBorderStyle}">
+                            <Button Style="{StaticResource MyButton}">
+                                <Label Content="Upgrade&#x0a;Cost:1000" />
+                            </Button>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </ListBox>
+        </ScrollViewer>
+
+    </Grid>
+</Window>

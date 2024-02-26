@@ -1,0 +1,19 @@
+﻿<Application x:Class="RpgGame.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:RpgGame"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <LinearGradientBrush x:Key="MyButtonLinearGradientBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="DarkGreen" Offset="0.24"/>
+            <GradientStop Color="Green" Offset="0.70"/>
+            <GradientStop Color="LimeGreen" Offset="0.95"/>
+        </LinearGradientBrush>
+        <Style x:Key="MyButtonBorderStyle" TargetType="Border">
+            <Setter Property="BorderThickness" Value="3"></Setter>
+            <Setter Property="BorderBrush" Value="Black"></Setter>
+            <Setter Property="CornerRadius" Value="30"></Setter>
+            <Setter Property="Background" Value="{StaticResource MyButtonLinearGradientBrush}"></Setter>
+        </Style>
+    </Application.Resources>
+</Application>

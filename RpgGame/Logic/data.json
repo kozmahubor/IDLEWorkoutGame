@@ -1,0 +1,13 @@
+{
+  "game": {
+    "UserLevel": 1,
+    "UserMoney": "1",
+    "stats": {
+      "Power": 1,
+      "Stamina": 1,
+      "Energy": 1,
+      "PriceDiscount": 1,
+      "DoubleLiftChance": 1
+    }
+  }
+}
